@@ -1,0 +1,14 @@
+server:
+  port: 8222
+spring:
+  datasource:
+    username: sa
+    password: welcome
+    url: jdbc:h2:mem:accounts_db
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
