@@ -23,6 +23,7 @@ public class AccountsController {
 
     @PutMapping("/deposit/{accountId}/{amount}")
     public double deposit(@PathVariable("accountId") long accountId, @PathVariable("amount") double amount){
+        System.out.println("Inside the deposit method of Accounts controller class");
         return accountService.deposit(accountId, amount );
     }
 }
