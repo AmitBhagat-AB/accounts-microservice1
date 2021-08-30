@@ -22,7 +22,7 @@ public class AccountService {
                 .orElseThrow(() -> new IllegalArgumentException("Account with Account id does not exists"));
         double updatedAccountBalance = account.getBalance() + amount;
         account.setBalance(updatedAccountBalance);
-
+        this.accountsRepository.save(account);
         return updatedAccountBalance;
     }
 
@@ -34,6 +34,7 @@ public class AccountService {
         if ((currentAccountBalance - withdrawalAmount) > Account.MIN_BALANCE){
             currentAccountBalance = currentAccountBalance - withdrawalAmount;
             account.setBalance(currentAccountBalance);
+            this.accountsRepository.save(account);
             return withdrawalAmount;
         }
         throw new IllegalArgumentException("Insufficient Balance ");
