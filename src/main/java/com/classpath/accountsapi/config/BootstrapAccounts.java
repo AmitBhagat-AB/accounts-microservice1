@@ -14,22 +14,25 @@ public class BootstrapAccounts implements ApplicationListener<ApplicationReadyEv
     private AccountsRepository accountsRepository;
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        Account account = new Account();
+        Account account = Account.builder().balance(50000).build();
 
-        account.setBalance(50000);
+        Customer customer = Customer.builder()
+                                    .aadharNumber("676545432")
+                                    .customerName("Vinayak")
+                                    .emailAddress("vinayak@gmail.com")
+                                    .panNumber("AOYPO8777M").build();
+       customer.addAccount(account);
+       Account savedAccount = this.accountsRepository.save(account);
 
-        Customer customer = new Customer();
+       Account account2 = Account.builder().balance(70000).build();
 
-        customer.setAadharNumber("676545432");
-        customer.setCustomerName("Vinayak");
-        customer.setEmailAddress("vinayak@gmail.com");
-        customer.setPanNumber("AOYPO8777M");
-
-        account.setCustomer(customer);
-        customer.setAccount(account);
-        Account savedAccount = this.accountsRepository.save(account);
-
-        System.out.println("Account saved :: " + savedAccount);
+        Customer customer2 = Customer.builder()
+                                    .aadharNumber("87788789")
+                                    .customerName("Rashid")
+                                    .emailAddress("rashid@gmail.com")
+                                    .panNumber("AOYPP8777M").build();
+       customer2.addAccount(account2);
+       Account savedAccount2 = this.accountsRepository.save(account2);
 
     }
 }

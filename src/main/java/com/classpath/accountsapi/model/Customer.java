@@ -1,13 +1,16 @@
 package com.classpath.accountsapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Data
 @EqualsAndHashCode(of={"cutomerId", "customerName", "emailAddress"})
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Customer {
 
     @Id
@@ -26,4 +29,9 @@ public class Customer {
     @PrimaryKeyJoinColumn
     @JsonIgnore
     private Account account;
+
+    public void addAccount(Account account){
+        this.account = account;
+        account.setCustomer(this);
+    }
 }
