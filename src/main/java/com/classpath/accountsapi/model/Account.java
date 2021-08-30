@@ -2,12 +2,14 @@ package com.classpath.accountsapi.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Data
-@EqualsAndHashCode(of = {"accountId", "customerName", "emailAddress", "panNumber"})
+@EqualsAndHashCode(of = {"accountId"})
 @Entity
+@ToString(exclude={"customer"})
 public class Account {
 
     public static final double MIN_BALANCE = 25_000;
@@ -19,6 +21,7 @@ public class Account {
     private double balance;
 
     @OneToOne
+    @MapsId
     @JoinColumn(name="customer_id")
     private Customer customer;
 

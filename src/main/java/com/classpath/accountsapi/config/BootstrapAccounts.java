@@ -1,6 +1,7 @@
 package com.classpath.accountsapi.config;
 
 import com.classpath.accountsapi.model.Account;
+import com.classpath.accountsapi.model.Customer;
 import com.classpath.accountsapi.repository.AccountsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -16,12 +17,18 @@ public class BootstrapAccounts implements ApplicationListener<ApplicationReadyEv
         Account account = new Account();
 
         account.setBalance(50000);
-        account.setAadharNumber("676545432");
-        account.setCustomerName("Vinayak");
-        account.setEmailAddress("vinayak@gmail.com");
-        account.setPanNumber("AOYPO8777M");
 
+        Customer customer = new Customer();
+
+        customer.setAadharNumber("676545432");
+        customer.setCustomerName("Vinayak");
+        customer.setEmailAddress("vinayak@gmail.com");
+        customer.setPanNumber("AOYPO8777M");
+
+        account.setCustomer(customer);
+        customer.setAccount(account);
         Account savedAccount = this.accountsRepository.save(account);
+
         System.out.println("Account saved :: " + savedAccount);
 
     }
