@@ -2,10 +2,8 @@ package com.classpath.accountsapi.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 
 @Data
 @EqualsAndHashCode(of = {"accountId", "customerName", "emailAddress", "panNumber"})
@@ -15,18 +13,13 @@ public class Account {
     public static final double MIN_BALANCE = 25_000;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="customer_id")
     private long accountId;
 
     private double balance;
 
-    private String customerName;
-
-    private String emailAddress;
-
-    private String panNumber;
-
-    private String aadharNumber;
-
+    @OneToOne
+    @JoinColumn(name="customer_id")
+    private Customer customer;
 
 }

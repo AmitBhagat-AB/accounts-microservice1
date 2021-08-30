@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.ArrayList;
 import java.util.List;
-import static java.util.stream.Collectors.toList;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import java.util.stream.Collectors;
 
 @Component
 @RestControllerAdvice
@@ -22,13 +20,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Error> handleInvalidAccountId(Exception exception){
-        return ResponseEntity.status(NOT_FOUND).body(new Error(100, exception.getMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(100, exception.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Error> handleInvalidMethodArgument(MethodArgumentNotValidException exception){
-        List<String> errorMessages = exception.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(toList());
-        return  ResponseEntity.status(BAD_REQUEST).body(new Error(200, errorMessages));
+        List<String> errorMessages = exception.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Error(200, errorMessages));
     }
 }
 
