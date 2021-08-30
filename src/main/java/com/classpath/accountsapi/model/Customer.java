@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,6 +28,11 @@ public class Customer {
 
     private String aadharNumber;
 
+    private LocalDate birthDate;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Address> addressSet = new HashSet<>();
+
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @PrimaryKeyJoinColumn
     @JsonIgnore
@@ -33,5 +41,13 @@ public class Customer {
     public void addAccount(Account account){
         this.account = account;
         account.setCustomer(this);
+    }
+
+    public void addAddress(Address address){
+        if (addressSet == null){
+            addressSet = new HashSet<>();
+        }
+        addressSet.add(address);
+        address.setCustomer(this);
     }
 }
