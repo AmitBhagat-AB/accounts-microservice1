@@ -1,5 +1,6 @@
 package com.classpath.accountsapi.controller;
 
+import com.classpath.accountsapi.model.Transaction;
 import com.classpath.accountsapi.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,19 +12,16 @@ public class AccountsController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/{accountId}")
-    public double checkAccountBalance(@PathVariable("accountId") long accountId){
+    @GetMapping("/{accountId}/statement")
+    public Transaction checkAccountBalance(@PathVariable("accountId") long accountId){
         return accountService.checkBalance(accountId);
     }
 
-    @PutMapping("/withdraw/{accountId}/{amount}")
-    public double withdraw(@PathVariable("accountId") long accountId, @PathVariable("amount") double amount){
-        return accountService.withdraw(accountId, amount );
-    }
-
-    @PutMapping("/deposit/{accountId}/{amount}")
-    public double deposit(@PathVariable("accountId") long accountId, @PathVariable("amount") double amount){
-        System.out.println("Inside the deposit method of Accounts controller class");
-        return accountService.deposit(accountId, amount );
+    @PutMapping("/transaction/{accountId}")
+    public Transaction withdraw(@PathVariable("accountId") long accountId, @RequestBody Transaction transaction){
+        if (transaction.getType().equalsIgnoreCase("WITHDRAW")){
+            return accountService.withdraw(accountId, transaction );
+        }
+        return accountService.deposit(accountId, transaction );
     }
 }
