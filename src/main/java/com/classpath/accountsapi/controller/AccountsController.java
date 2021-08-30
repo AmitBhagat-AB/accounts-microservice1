@@ -5,6 +5,8 @@ import com.classpath.accountsapi.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountsController {
@@ -18,7 +20,7 @@ public class AccountsController {
     }
 
     @PutMapping("/transaction/{accountId}")
-    public Transaction withdraw(@PathVariable("accountId") long accountId, @RequestBody Transaction transaction){
+    public Transaction withdraw(@PathVariable("accountId") long accountId, @Valid @RequestBody Transaction transaction){
         if (transaction.getType().equalsIgnoreCase("WITHDRAW")){
             return accountService.withdraw(accountId, transaction );
         }
