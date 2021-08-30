@@ -15,7 +15,7 @@ public class Transaction {
 
     private String type;
 
-    @Max(value = 50_000, message = "the amount should not exceed 50k")
+    @Max(value = 50_000, message = "The amount should not exceed 50k")
     private double amount;
 
     @NotEmpty(message = "notes cannot be empty")
