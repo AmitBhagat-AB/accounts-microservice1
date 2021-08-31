@@ -69,6 +69,10 @@ public class AccountService {
         final PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
         return this.accountsRepository.findByBalanceGreaterThan(balance, pageRequest);
     }
+    public Page<Account> fetchAccountsBetween(int pageNo, int pageSize,double gtBalance, double ltBalance) {
+        final PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+        return this.accountsRepository.findByBalanceBetween(gtBalance, ltBalance, pageRequest);
+    }
 
     public Page<Account> fetchAllAccounts(int pageNo, int pageSize, String sortBy) {
         final PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));

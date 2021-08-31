@@ -12,4 +12,6 @@ public interface AccountsRepository extends JpaRepository<Account, Long> {
 
     Page<Account> findByBalanceGreaterThan(double accountBalance, Pageable page);
 
+    Page<Account> findByBalanceBetween(double accountBalanceGT, double accountBalanceLt, Pageable page);
+
 }

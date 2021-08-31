@@ -1,5 +1,6 @@
 package com.classpath.accountsapi.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
 
 import javax.persistence.*;
