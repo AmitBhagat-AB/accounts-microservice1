@@ -20,8 +20,5 @@ ARG DEPENDENCY=/app/target/dependency
 COPY --from=builder ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=builder ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=builder ${DEPENDENCY}/BOOT-INF/classes /app
-
 EXPOSE 8222
-
 ENTRYPOINT ["java", "-cp", "app:app/lib/*", "com.classpath.accountsapi.AccountsApiApplication"]
-
