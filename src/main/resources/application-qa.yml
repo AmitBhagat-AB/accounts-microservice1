@@ -4,7 +4,7 @@ spring:
   datasource:
     username: root
     password: welcome
-    url: jdbc:mysql://localhost:3306/accounts_db
+    url: jdbc:mysql://accounts-db-do-user-4431921-0.b.db.ondigitalocean.com:3306/defaultdb
   jpa:
     hibernate:
       ddl-auto: create

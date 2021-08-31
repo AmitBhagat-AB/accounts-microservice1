@@ -2,8 +2,8 @@ server:
   port: 8222
 spring:
   datasource:
-    username: sa
-    password: welcome
+    username: doadmin
+    password: atnxoh6p92bfpnpo
     url: jdbc:h2:mem:accounts_db
   jpa:
     hibernate:
