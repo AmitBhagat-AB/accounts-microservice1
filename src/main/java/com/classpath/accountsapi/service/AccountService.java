@@ -6,6 +6,8 @@ import com.classpath.accountsapi.repository.AccountsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class AccountService {
 
@@ -57,5 +59,9 @@ public class AccountService {
 
         }
         throw new IllegalArgumentException("Insufficient Balance ");
+    }
+
+    public Set<Account> fetchAccountsGreaterThan(double balance) {
+        return this.accountsRepository.findByBalanceGreaterThan(balance);
     }
 }

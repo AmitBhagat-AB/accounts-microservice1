@@ -1,11 +1,13 @@
 package com.classpath.accountsapi.controller;
 
+import com.classpath.accountsapi.model.Account;
 import com.classpath.accountsapi.model.Transaction;
 import com.classpath.accountsapi.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/accounts")
@@ -26,4 +28,9 @@ public class AccountsController {
         }
         return accountService.deposit(accountId, transaction );
     }
+    @GetMapping("/balance/{balance}")
+    public Set<Account> fetchByBalance(@PathVariable("balance") double balance){
+        return this.accountService.fetchAccountsGreaterThan(balance);
+    }
+
 }
