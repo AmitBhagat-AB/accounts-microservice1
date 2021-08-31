@@ -3,10 +3,15 @@ package com.classpath.accountsapi.controller;
 import com.classpath.accountsapi.model.Account;
 import com.classpath.accountsapi.model.Transaction;
 import com.classpath.accountsapi.service.AccountService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +25,28 @@ public class AccountsController {
     private AccountService accountService;
 
     @GetMapping("/{accountId}/statement")
-    public Transaction checkAccountBalance(@PathVariable("accountId") long accountId){
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Missing description",
+                            content = @Content(mediaType = "text/plain")),
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "JVM system properties of a particular host.",
+                            content = @Content(mediaType = "application/json"
+                                    )) })
+    @Operation(
+            summary = "Get JVM system properties for particular host",
+            description = "Retrieves and returns the JVM system properties from the system "
+                    + "service running on the particular host.")
+
+    public Transaction checkAccountBalance(@PathVariable("accountId") @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true , description = "account id ") long accountId){
         return accountService.checkBalance(accountId);
     }
 
     @PutMapping("/transaction/{accountId}")
+    @ApiResponse(description = "Returns the Transaction object", responseCode = "200")
     public Transaction withdraw(@PathVariable("accountId") long accountId, @Valid @RequestBody Transaction transaction){
         if (transaction.getType().equalsIgnoreCase("WITHDRAW")){
             return accountService.withdraw(accountId, transaction );
