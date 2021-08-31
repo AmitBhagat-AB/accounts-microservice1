@@ -2,8 +2,8 @@ server:
   port: 8222
 spring:
   datasource:
-    username: doadmin
-    password: atnxoh6p92bfpnpo
+    username: sa
+    password: welcome
     url: jdbc:h2:mem:accounts_db
   jpa:
     hibernate:
@@ -19,7 +19,6 @@ management:
     web:
       exposure:
         include: "*"
-      base-path: /manage
   endpoint:
     health:
       show-details: always
@@ -27,6 +26,6 @@ management:
       enabled: true
     startup:
       enabled: true
-  server:
-    address: 127.0.0.1
-    port: 9001
+
+app:
+  loadBean: true
