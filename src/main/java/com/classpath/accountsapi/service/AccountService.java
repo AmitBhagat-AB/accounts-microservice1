@@ -65,9 +65,9 @@ public class AccountService {
         throw new IllegalArgumentException("Insufficient Balance ");
     }
 
-    public Set<Account> fetchAccountsGreaterThan(int pageNo, int pageSize,double balance) {
+    public Page<Account> fetchAccountsGreaterThan(int pageNo, int pageSize,double balance) {
         final PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
-        return new HashSet<>(this.accountsRepository.findByBalanceGreaterThan(balance, pageRequest));
+        return this.accountsRepository.findByBalanceGreaterThan(balance, pageRequest);
     }
 
     public Page<Account> fetchAllAccounts(int pageNo, int pageSize, String sortBy) {

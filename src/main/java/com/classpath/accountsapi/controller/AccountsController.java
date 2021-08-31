@@ -51,11 +51,18 @@ public class AccountsController {
     }
 
     @GetMapping("/balance")
-    public Set<Account> fetchAccountsByBalance(
+    public Map<String, Object>  fetchAccountsByBalance(
             @RequestParam(value = "pageNo", defaultValue = "0") int pageNo,
             @RequestParam(value = "size", defaultValue = "10") int pageSize,
             @RequestParam(value = "gt" , defaultValue = "50000") double gt){
-        return this.accountService.fetchAccountsGreaterThan(pageNo, pageSize, gt);
+        final Page<Account> pageResponse = this.accountService.fetchAccountsGreaterThan(pageNo, pageSize, gt);
+        long totalNumberOfRecords = pageResponse.getTotalElements();
+        final int totalPages = pageResponse.getTotalPages();
+        Map<String, Object> response = new HashMap<>();
+        response.put("records", totalNumberOfRecords);
+        response.put("pages", totalPages);
+        response.put("data", pageResponse.getContent());
+        return response;
     }
 
 
