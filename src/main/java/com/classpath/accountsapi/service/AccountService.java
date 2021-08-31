@@ -70,9 +70,9 @@ public class AccountService {
         return new HashSet<>(this.accountsRepository.findByBalanceGreaterThan(balance, pageRequest));
     }
 
-    public Set<Account> fetchAllAccounts(int pageNo, int pageSize, String sortBy) {
+    public Page<Account> fetchAllAccounts(int pageNo, int pageSize, String sortBy) {
         final PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         final Page<Account> pageResponse = this.accountsRepository.findAll(pageRequest);
-        return new HashSet<>(pageResponse.getContent());
+        return pageResponse;
     }
 }
