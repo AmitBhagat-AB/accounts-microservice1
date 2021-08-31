@@ -4,8 +4,12 @@ import com.classpath.accountsapi.model.Account;
 import com.classpath.accountsapi.model.Transaction;
 import com.classpath.accountsapi.repository.AccountsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -61,7 +65,14 @@ public class AccountService {
         throw new IllegalArgumentException("Insufficient Balance ");
     }
 
-    public Set<Account> fetchAccountsGreaterThan(double balance) {
-        return this.accountsRepository.findByBalanceGreaterThan(balance);
+    public Set<Account> fetchAccountsGreaterThan(int pageNo, int pageSize,double balance) {
+        final PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+        return new HashSet<>(this.accountsRepository.findByBalanceGreaterThan(balance, pageRequest));
+    }
+
+    public Set<Account> fetchAllAccounts(int pageNo, int pageSize, String sortBy) {
+        final PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        final Page<Account> pageResponse = this.accountsRepository.findAll(pageRequest);
+        return new HashSet<>(pageResponse.getContent());
     }
 }

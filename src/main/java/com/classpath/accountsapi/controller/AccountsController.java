@@ -28,9 +28,24 @@ public class AccountsController {
         }
         return accountService.deposit(accountId, transaction );
     }
-    @GetMapping("/balance/{balance}")
-    public Set<Account> fetchByBalance(@PathVariable("balance") double balance){
-        return this.accountService.fetchAccountsGreaterThan(balance);
+
+    @GetMapping
+    public Set<Account> fetchAccounts(
+                            @RequestParam(value = "pageNo", defaultValue = "0") int pageNo,
+                            @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                            @RequestParam(value = "sortBy", defaultValue = "accountId") String sortBy){
+
+        return this.accountService.fetchAllAccounts(pageNo, pageSize, sortBy);
+
     }
+
+    @GetMapping("/balance")
+    public Set<Account> fetchAccountsByBalance(
+            @RequestParam(value = "pageNo", defaultValue = "0") int pageNo,
+            @RequestParam(value = "size", defaultValue = "10") int pageSize,
+            @RequestParam(value = "gt" , defaultValue = "50000") double gt){
+        return this.accountService.fetchAccountsGreaterThan(pageNo, pageSize, gt);
+    }
+
 
 }
