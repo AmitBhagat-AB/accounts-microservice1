@@ -3,8 +3,10 @@ package com.classpath.accountsapi;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.metrics.buffering.BufferingApplicationStartup;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class AccountsApiApplication {
 	public static void main(String[] args) {
 		SpringApplication application = new SpringApplication(AccountsApiApplication.class);
