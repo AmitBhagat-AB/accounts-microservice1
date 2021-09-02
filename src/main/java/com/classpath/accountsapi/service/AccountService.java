@@ -28,6 +28,8 @@ public class AccountService {
 
     private final RestTemplate restTemplate;
 
+    private final LoanFeignClient feignClient;
+
 
     public Transaction checkBalance(long accountId){
         Account account = this.accountsRepository.findById(accountId)
@@ -95,14 +97,20 @@ public class AccountService {
     public Loan applyForLoan(long customerId, Loan loan) {
         //1st approach using Discovery client
         //return applyForLoanUsingDiscoveryClient(customerId, loan);
-        return applyForLoanUsingClientSideLoanBalancer(customerId, loan);
+        //return applyForLoanUsingClientSideLoanBalancer(customerId, loan);
+        return applyForLoanUsingFeignClient(customerId, loan);
+    }
+
+    private Loan applyForLoanUsingFeignClient(long customerId, Loan loan) {
+        final Loan loanResponse = feignClient.applyForLoan(customerId, loan).getBody();
+        return loanResponse;
     }
 
 
     private Loan applyForLoanUsingDiscoveryClient(long customerId, Loan loan){
         final List<ServiceInstance> loanserviceInstances = this.discoveryClient.getInstances("LOANSERVICE");
         if (loanserviceInstances != null && !loanserviceInstances.isEmpty()){
-            log.info("Number of instances of loan services: {}", loanserviceInstances.size());
+            log.info("Number of instances of loan services: {}  ", loanserviceInstances.size());
             final ServiceInstance loanServiceInstance = loanserviceInstances.get(0);
             String loanServiceURI = loanServiceInstance.getUri().toString();
             String absoluteURL = loanServiceURI+"/api/customer/"+customerId+"/loans";
