@@ -94,12 +94,17 @@ public class AccountService {
     }
 
     //we need to talk to Loans microservice using the post method and send the reponse back
-    @CircuitBreaker(name = "loanservice")
+    @CircuitBreaker(name = "loanservice", fallbackMethod = "fallback")
     public Loan applyForLoan(long customerId, Loan loan) {
         //1st approach using Discovery client
         //return applyForLoanUsingDiscoveryClient(customerId, loan);
         return applyForLoanUsingClientSideLoanBalancer(customerId, loan);
        // return applyForLoanUsingFeignClient(customerId, loan);
+    }
+
+    private Loan fallback(Exception exception){
+        log.error("Failed calling the service:: {}", exception.getMessage());
+        return Loan.builder().loanId("1111").loanAmount(0).balanceAmount(0).status("TEMP_DOWN").build();
     }
 
     private Loan applyForLoanUsingFeignClient(long customerId, Loan loan) {
