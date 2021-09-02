@@ -87,7 +87,7 @@ public class AccountsController {
     }
 
     @PostMapping("/{customerId}/loans")
-    public Loan applyForLoan(@PathVariable("customerId") long customerId, Loan loan){
+    public Loan applyForLoan(@PathVariable("customerId") long customerId, @RequestBody Loan loan){
         return this.accountService.applyForLoan(customerId, loan);
     }
 
