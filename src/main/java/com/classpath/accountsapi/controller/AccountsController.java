@@ -1,12 +1,14 @@
 package com.classpath.accountsapi.controller;
 
 import com.classpath.accountsapi.model.Account;
+import com.classpath.accountsapi.model.Loan;
 import com.classpath.accountsapi.model.Transaction;
 import com.classpath.accountsapi.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,10 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/accounts")
+@RequiredArgsConstructor
 public class AccountsController {
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
 
     @GetMapping("/{accountId}/statement")
     @ApiResponses(
@@ -82,6 +84,11 @@ public class AccountsController {
         response.put("pages", totalPages);
         response.put("data", pageResponse.getContent());
         return response;
+    }
+
+    @PostMapping("/{customerId}/loans")
+    public Loan applyForLoan(@PathVariable("customerId") long customerId, Loan loan){
+        return this.accountService.applyForLoan(customerId, loan);
     }
 
 
