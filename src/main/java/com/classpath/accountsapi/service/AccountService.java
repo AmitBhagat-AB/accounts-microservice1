@@ -4,6 +4,7 @@ import com.classpath.accountsapi.model.Account;
 import com.classpath.accountsapi.model.Loan;
 import com.classpath.accountsapi.model.Transaction;
 import com.classpath.accountsapi.repository.AccountsRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
@@ -73,7 +74,6 @@ public class AccountService {
             transactionOut.setAccountId(account.getAccountId());
             transactionOut.setNotes(transaction.getNotes());
             return transaction;
-
         }
         throw new IllegalArgumentException("Insufficient Balance ");
     }
@@ -94,11 +94,12 @@ public class AccountService {
     }
 
     //we need to talk to Loans microservice using the post method and send the reponse back
+    @CircuitBreaker(name = "loanservice")
     public Loan applyForLoan(long customerId, Loan loan) {
         //1st approach using Discovery client
         //return applyForLoanUsingDiscoveryClient(customerId, loan);
-        //return applyForLoanUsingClientSideLoanBalancer(customerId, loan);
-        return applyForLoanUsingFeignClient(customerId, loan);
+        return applyForLoanUsingClientSideLoanBalancer(customerId, loan);
+       // return applyForLoanUsingFeignClient(customerId, loan);
     }
 
     private Loan applyForLoanUsingFeignClient(long customerId, Loan loan) {
