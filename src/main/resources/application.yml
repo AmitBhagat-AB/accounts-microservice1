@@ -7,22 +7,6 @@ spring:
           content-type: application/json
       kafka:
         binder:
-          brokers: pkc-l7pr2.ap-south-1.aws.confluent.cloud:9092
-          configuration:
-            ssl:
-              endpoint:
-                identification:
-                  algorithm: https
-            sasl:
-              jaas:
-                config: org.apache.kafka.common.security.plain.PlainLoginModule required username="TWLY5HHW3LWGTQOX" password="3l5SLay7Iu86GLOJEx6crm7XRwZwzL+j0+CGcwgVjdmQc0t7urNvVIEeGb6G/OyB";
-              mechanism: PLAIN
-            security:
-              protocol: SASL_SSL
-            request:
-              timeout:
-                ms: 20000
-            retry:
-              backoff:
-                ms: 500
+          zkNodes: localhost
+          brokers: localhost
       default-binder: kafka
