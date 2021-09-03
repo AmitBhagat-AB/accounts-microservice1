@@ -9,10 +9,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.util.List;
@@ -30,6 +32,8 @@ public class AccountService {
     private final RestTemplate restTemplate;
 
     private final LoanFeignClient feignClient;
+
+    private final Source source;
 
 
     public Transaction checkBalance(long accountId){
@@ -94,16 +98,21 @@ public class AccountService {
     }
 
     //we need to talk to Loans microservice using the post method and send the reponse back
-    @CircuitBreaker(name = "loanservice", fallbackMethod = "fallback")
+    //@CircuitBreaker(name = "loanservice", fallbackMethod = "fallback")
     public Loan applyForLoan(long customerId, Loan loan) {
         //1st approach using Discovery client
         //return applyForLoanUsingDiscoveryClient(customerId, loan);
-        return applyForLoanUsingClientSideLoanBalancer(customerId, loan);
+        //return applyForLoanUsingClientSideLoanBalancer(customerId, loan);
        // return applyForLoanUsingFeignClient(customerId, loan);
+
+        //pushing the message to the kafka topic called orders-topic
+        this.source.output().send(MessageBuilder.withPayload(loan).build());
+
+        return fallback(null);
     }
 
     private Loan fallback(Exception exception){
-        log.error("Failed calling the service:: {}", exception.getMessage());
+        //log.error("Failed calling the service:: {}", exception.getMessage());
         return Loan.builder().loanId("1111").loanAmount(0).balanceAmount(0).status("TEMP_DOWN").build();
     }
 
